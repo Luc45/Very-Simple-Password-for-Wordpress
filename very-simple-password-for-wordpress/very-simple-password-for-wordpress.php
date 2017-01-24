@@ -288,9 +288,11 @@ function vspfw_admin_css() {
 			    max-width: 50%;
 			    vertical-align: middle;
 			    background: #ffffff;
-			    padding: 10px;
+			    padding: 5px 10px;
+			    color: #000;
 			    border-radius: 5px;
 			    border: 1px solid #e3e3e3;
+			    border-left: 5px solid #ff9438;
 			}
 			div#vspfw_force_reauth_message {
 			    background: #FFF;
