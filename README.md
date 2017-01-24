@@ -2,6 +2,8 @@
 
 Hide your entire wordpress website behind one simple password.
 
+![Very Simple Password for Wordpress - by Lucas Bustamante](http://i.imgur.com/TXEFJ7e.png)
+
 Very lightweight plugin:
 - Less than 100kb.
 - No external CSS.
