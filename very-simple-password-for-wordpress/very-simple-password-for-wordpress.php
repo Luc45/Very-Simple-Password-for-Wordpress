@@ -196,10 +196,32 @@ function VSPFW_is_login_page() {
     return in_array($GLOBALS['pagenow'], array('wp-login.php'));
 }
 
+// Check if a cookie is in database and is still valid
+function VSPFW_check_cookie_on_database($cookie) {
+	if (strlen($cookie) == 32) {
+
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'vspfw';
+
+		$results = $wpdb->get_results( 'SELECT * FROM '.$table_name.' WHERE unique_key = "'.$cookie.'"', OBJECT );
+
+		if ($results) {
+			return true;
+		} 
+	}
+	return false;
+}
+
 // Don't ask for password on login or admin panel
 function VSPFW_should_ask_password() {
-	if (!is_admin() || !VSPFW_is_login_page() || !current_user_can('manage_options') || !VSPFW_check_cookie_on_database($_COOKIE['vspfw_password_entered'])) {
-		return true;
+	// We have plugin enabled and password set
+	if ((get_option('vspfw_enabled') == "enabled") && (get_option('vspfw_password') != "")) {
+		// Disable password on admin panel, login page and for admin users
+		if (!is_admin() && !VSPFW_is_login_page() && !current_user_can('manage_options')) {
+			if (!VSPFW_check_cookie_on_database($_COOKIE['vspfw_password_entered'])) {
+				return true;
+			}
+		}
 	}
 }
 
@@ -410,23 +432,6 @@ function VSPFW_prevent_brute_force_check($ip_address) {
 }
 add_action('init', 'VSPFW_prevent_brute_force_check');
 
-// Check if a cookie is in database and is still valid
-function VSPFW_check_cookie_on_database($cookie) {
-	if (strlen($cookie) == 32) {
-
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . 'vspfw';
-
-		$results = $wpdb->get_results( 'SELECT * FROM '.$table_name.' WHERE unique_key = "'.$cookie.'"', OBJECT );
-
-		if ($results) {
-			return true;
-		} 
-	}
-	return false;
-}
-
 // Check if user submitted password on the front-end
 function VSPFW_auth_frontend_user() {
 	if (VSPFW_should_ask_password()) {
@@ -467,7 +472,7 @@ add_action('init', 'VSPFW_auth_frontend_user', 40);
 // Check if $_COOKIE is set. I know this is simple and not safe, but the idea behind this plugin is to provide real-life solution to a site you need to hide while you develop it, not secure rocket science blueprints.
 function VSPFW_CheckPassword() {
 	// Check if password is enabled and set, and if we should ask for password
-	if (((get_option('vspfw_enabled') == "enabled") || (get_option('vspfw_password') != "")) && VSPFW_should_ask_password()) {
+	if (VSPFW_should_ask_password()) {
 			// If he doesn't, asks for password and stops Wordpress
 			require('VSPFW_view.php');
 			exit();
