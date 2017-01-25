@@ -3,7 +3,7 @@
 Plugin Name: Very Simple Password for Wordpress
 Plugin URI:  https://developer.wordpress.org/plugins/very-simple-password-for-wordpress/
 Description: This adds a simple password protection for wordpress.
-Version:     1.1
+Version:     1.3
 Author:      Lucas Bustamante
 Author URI:  https://www.lucasbustamante.com.br
 */
@@ -15,7 +15,7 @@ if (is_admin()){
 
 	// Create database
 	global $VSPFW_db_version;
-	$VSPFW_db_version = '1.1';
+	$VSPFW_db_version = '1.3';
 
 	function VSPFW_install() {
 		global $wpdb;
