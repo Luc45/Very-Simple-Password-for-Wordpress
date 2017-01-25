@@ -10,6 +10,7 @@
 
 	<div id="vspfw-enter-password-string"><?php echo esc_attr(get_option('vspfw_enter_password_string')); ?></div>
 	<form method="POST">
+		<?php wp_nonce_field('vspfw_user_entered_password_wpnonce', 'vspfw_user_entered_password_wpnonce') ?>
 		<input type="password" autofocus name="vspfw_password"><br><br>
 		<input type="submit" value="<?php echo esc_attr(get_option('vspfw_submit')); ?>">
 	</form>

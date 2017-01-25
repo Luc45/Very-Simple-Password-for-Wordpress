@@ -434,7 +434,8 @@ add_action('init', 'VSPFW_prevent_brute_force_check');
 
 // Check if user submitted password on the front-end
 function VSPFW_auth_frontend_user() {
-	if (VSPFW_should_ask_password()) {
+	$nonce=$_REQUEST['vspfw_user_entered_password_wpnonce'];
+	if (VSPFW_should_ask_password() && wp_verify_nonce($nonce, 'vspfw_user_entered_password_wpnonce')) {
 		if (isset($_POST['vspfw_password']) && !empty($_POST['vspfw_password'])) {
 			$ip_address = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP);
 			if (VSPFW_prevent_brute_force_check($ip_address)) {
