@@ -98,7 +98,7 @@ if (is_admin()){
 	  register_setting( 'VSPFW-option-group', 'vspfw_contact_email', 'strval');
 	  register_setting( 'VSPFW-option-group', 'vspfw_need_the_password_string', 'strval' );
 	  register_setting( 'VSPFW-option-group', 'vspfw_allow_request_password', 'strval' );
-	  register_setting( 'VSPFW-option-group', 'vspfw_debug_domain', 'strval' );
+	  register_setting( 'VSPFW-option-group', 'vspfw_website_domain', 'strval' );
 	  register_setting( 'VSPFW-option-group', 'vspfw_force_reauth', 'strval' );
 	  register_setting( 'VSPFW-option-group', 'vspfw_force_reauth_message', 'strval' );
 	  register_setting( 'VSPFW-option-group', 'vspfw_brute_force_protection_message', 'strval' );
@@ -132,8 +132,8 @@ if (is_admin()){
 	if (get_option('vspfw_submit') == "") {
 		update_option('vspfw_submit', 'Enter');
 	}
-	if (get_option('vspfw_debug_domain') == "") {
-		update_option('vspfw_debug_domain', str_replace('www.','.',$_SERVER['SERVER_NAME']));
+	if (get_option('vspfw_website_domain') == "") {
+		update_option('vspfw_website_domain', vspfw_filter_domain_to_use_on_cookie(get_bloginfo('url')));
 	}
 	if (get_option('vspfw_wrong_password') == "") {
 		update_option('vspfw_wrong_password', 'Wrong password...');
@@ -210,6 +210,22 @@ function VSPFW_check_cookie_on_database($cookie) {
 		} 
 	}
 	return false;
+}
+
+// Filter domain to use on cookie
+// Only called at the first time the plugin runs
+function vspfw_filter_domain_to_use_on_cookie($domain) {
+	// Removes http/s:// from domain
+	$domain = str_replace("https://", '', $domain);
+	$domain = str_replace("http://", '', $domain);
+
+	// Replaces www. with . wich will work as a wilcard for cookies under that domain
+	$domain = str_replace('www.','.', $domain);
+
+	// Check if domain starts with dot, if not, inserts one
+	if (strpos($domain, 0, 1) != '.') {
+		$domain = '.'.$domain;
+	}
 }
 
 // Don't ask for password on login or admin panel
@@ -466,8 +482,6 @@ function VSPFW_auth_frontend_user() {
 		}
 	}
 }
-
-// Running a cookie check before checking if user posted password
 add_action('init', 'VSPFW_auth_frontend_user', 40);
 
 // Check if $_COOKIE is set. I know this is simple and not safe, but the idea behind this plugin is to provide real-life solution to a site you need to hide while you develop it, not secure rocket science blueprints.

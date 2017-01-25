@@ -81,9 +81,9 @@ function very_simple_password_for_wordpress() {
 				        	<div class="vspfw-option-group">
 					        	<h2>Domain</h2>
 					        	<div class="vspfw-option">
-					        		<label for="vspfw_debug_domain">Your domain. It must start with a dot:</label>
-					        		<input type="text" name="vspfw_debug_domain" value="<?php echo esc_attr( get_option('vspfw_debug_domain') ); ?>" style="min-width:200px;"/>
-					        		<div class="vspfw-instructions">(The domain for the authentication cookie on the visitor browser. You don't have to change this field in most cases, but due to PHP limitations, websites with new TLDs such as .tech, or websites that run under subdomains such as blog.domain.com, might need to manually tweak this field. If your domain is <span style="color:#FF0000">www.domain.tech</span> you should set this field to <span style="color:#FF0000">.domain.tech</span>, with the dot at the beginning)</div>
+					        		<label for="vspfw_website_domain">Your domain. <strong>It must start with a dot:</strong></label>
+					        		<input type="text" name="vspfw_website_domain" value="<?php echo esc_attr( get_option('vspfw_website_domain') ); ?>" style="min-width:200px;"/>
+					        		<div class="vspfw-instructions">(This is the domain we will set on the authentication cookie on the visitor browser. You don't have to change this field in most cases, but due to PHP limitations, websites with new TLDs such as .tech, or websites that run under subdomains such as blog.domain.com, might need to manually tweak this field. If your domain is <span style="color:#FF0000">www.domain.tech</span> you should set this field to <span style="color:#FF0000">.domain.tech</span>, with the dot at the beginning)</div>
 					        	</div>
 				        	</div>
 			        	</td>
