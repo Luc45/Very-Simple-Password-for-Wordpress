@@ -226,6 +226,8 @@ function vspfw_filter_domain_to_use_on_cookie($domain) {
 	if (strpos($domain, 0, 1) != '.') {
 		$domain = '.'.$domain;
 	}
+	
+	return $domain;
 }
 
 // Don't ask for password on login or admin panel
