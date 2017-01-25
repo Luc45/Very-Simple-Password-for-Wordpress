@@ -16,3 +16,6 @@ Features:
 - Brute force protection.
 - Easily translate all front-end strings on Settings.
 - Few other options, such as Allow visitor to request password, etc...
+
+You can download it here:
+https://wordpress.org/plugins/very-simple-password/
