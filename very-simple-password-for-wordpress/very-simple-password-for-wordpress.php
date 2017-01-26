@@ -223,7 +223,7 @@ function vspfw_filter_domain_to_use_on_cookie($domain) {
 	$domain = str_replace('www.','.', $domain);
 
 	// Check if domain starts with dot, if not, inserts one
-	if (strpos($domain, 0, 1) != '.') {
+	if (substr($domain, 0, 1) != '.') {
 		$domain = '.'.$domain;
 	}
 
