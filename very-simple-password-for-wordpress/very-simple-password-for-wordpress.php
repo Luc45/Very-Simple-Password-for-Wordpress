@@ -3,9 +3,9 @@
 Plugin Name: Very Simple Password for Wordpress
 Plugin URI:  https://developer.wordpress.org/plugins/very-simple-password-for-wordpress/
 Description: This adds a simple password protection for wordpress.
-Version:     1.4
+Version:     1.7
 Author:      Lucas Bustamante
-Author URI:  https://www.lucasbustamante.com.br
+Author URI:  http://www.lucasbustamante.com.br
 */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
@@ -15,7 +15,7 @@ if (is_admin()){
 
 	// Create database
 	global $VSPFW_db_version;
-	$VSPFW_db_version = '1.4';
+	$VSPFW_db_version = '1.7';
 
 	function VSPFW_install() {
 		global $wpdb;
@@ -295,7 +295,7 @@ function vspfw_css() {
 	 <?php
 	}
 }
-add_action('init', 'vspfw_css', 5);
+add_action('init', 'vspfw_css', 50);
 
 // Load admin CSS
 function vspfw_admin_css() {
@@ -341,7 +341,7 @@ function vspfw_admin_css() {
 	 <?php
 	}
 }
-add_action('admin_enqueue_scripts', 'vspfw_admin_css', 5);
+add_action('admin_enqueue_scripts', 'vspfw_admin_css', 50);
 
 // Load admin JS
 function vspfw_admin_js() {
@@ -443,8 +443,15 @@ function VSPFW_prevent_brute_force_check($ip_address) {
 		} 
 		// If user failed the login more than 5 times in 120 seconds, it blocks him
 		if ($failed_login_attempts_between_time_frame > get_option('vspfw_brute_force_protection_tries')) {
+			// Brute force triggered
+			// Send email to administrator
+				error_log('Very Simple Password for Wordpress - Brute force protection triggered on website '.get_bloginfo('site_name').' ('.get_bloginfo('url').') - More than '.get_option('vspfw_brute_force_protection_tries').' failed login attempts in an interval of '.get_option('vspfw_brute_force_protection_interval').' seconds by visitor with IP address '.$ip_address, 1, get_bloginfo('admin_email'));
+				$vspfw_email_already_sent = true;
+
+			// Stop function VSPFW_auth_frontend_user and display error message instead
 			return false;
 		} else {
+			// All good -  Brute force protection NOT triggered
 			return true;
 		}
 }
@@ -468,9 +475,10 @@ function VSPFW_auth_frontend_user() {
 						}
 						// Set the cookie with the unique id for the period specified by the admin
 						setcookie('vspfw_password_entered', esc_html($unique_key), strtotime( '+'.get_option('vspfw_days').' days'), '/', esc_html(get_option('vspfw_debug_domain')));
+						$_COOKIE['vspfw_password_entered'] = esc_html($unique_key);
 						// Refresh after setting cookie, because $_COOKIE is set on page load - http://stackoverflow.com/questions/3230133/accessing-cookie-immediately-after-setcookie
 						//echo '<script type="text/javascript">window.location.reload(true);</script>';
-						header('Refresh:0');
+						//header('Refresh:0');
 				} else {
 					// Add this failed login to database to prevent anti-brute force attacks
 					VSPFW_prevent_brute_force_add_try($ip_address);
