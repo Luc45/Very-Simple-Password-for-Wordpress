@@ -1,0 +1,33 @@
+{
+  "autoload": {
+    "psr-4": {
+      "VSPW\\": "src"
+    }
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "natewr/simple-admin-pages",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/natewr/simple-admin-pages.git",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "require": {
+    "lucatume/di52": "^2.0",
+    "natewr/simple-admin-pages": "dev-master"
+  },
+  "require-dev": {
+    "lucatume/wp-browser": "~2.0"
+  },
+  "extra": {
+    "imposter": {
+      "namespace": "VSPW\\Vendor"
+    }
+  }
+}

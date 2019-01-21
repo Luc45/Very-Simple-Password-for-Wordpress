@@ -1,0 +1,9 @@
+{
+  "methodCalls": [
+    {
+      "class": "\\VSPW\\Container\\DI",
+      "method": "make",
+      "position": 0
+    }
+  ]
+}
